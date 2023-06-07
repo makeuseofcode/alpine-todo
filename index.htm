@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>AlpineJS</title>
+</head>
+
+<body>
+    <!-- <div x-data="{name:'David Uzondu', organisation:'Make Use Of'}" x-show="0">
+        My name is <strong x-text="name"></strong>
+        and <i x-text="organisation"></i> is Awesome
+    </div> -->
+    <!-- <div x-data="{number: 1}" x-show="1">
+        <h1 x-text="number"></h1>
+        <button @click="number = number + 1">Add new number</button>
+    </div> -->
+    <!-- <div x-data="{shown:true}">
+        <button @click="shown=!shown" x-text="shown ? 'Hide Element' : 'Show Element'">Toggle</button>
+        <template x-if="shown">
+            <div>The quick brown fox jumped over the dog.</div>
+        </template>
+    </div>  -->
+
+    <div x-data="{allTasks:$persist([])}">
+        <h1>Todo Application</h1>
+        <form @submit.prevent="
+        allTasks = [{task: $refs.task.value, id:Date.now(), done:false}].concat(allTasks); 
+        $refs.task.value=''">
+            <input type="text" x-ref="task">
+            <button type="submit">Add Task</button>
+        </form>
+        <div class="items">
+            <div x-data="{uncompleted:$persist([])}" x-effect="uncompleted = allTasks.filter(x=>x.done===false)">
+                <h3>Todo</h3>
+                <template x-for="element in uncompleted" :key="element.id">
+                    <div x-data="{showControls:false}" @mouseover="showControls = true"
+                        @mouseout="showControls = false">
+                        <div class="controls">
+                            <span x-show="showControls" x-on:click="element.done=true">[D]</span>
+                            <span x-show="showControls" @click="allTasks=allTasks.filter(x=>x.id!==element.id)">[R]</span>
+                        </div>
+                        <div x-text="element.task" class="task"></div>
+                    </div>
+                </template>
+            </div>
+            <div x-data="{completed:$persist([])}" x-effect="
+        completed=allTasks.filter(y=>y.done===true).reverse()">
+                <h3>Completed</h3>
+                <template x-for="element in completed">
+                    <div x-data="{showControls:false}" @mouseover="showControls = true"
+                        @mouseout="showControls = false">
+                        <div class="controls">
+                            <span x-show="showControls" x-on:click="element.done=false">[U]</span>
+                            <span x-show="showControls" @click="allTasks=allTasks.filter(x=>x.id!==element.id)">[R]</span>
+                        </div>
+                        <div x-text="element.task" class="task"></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</body>
+
+</html>
