@@ -28,22 +28,25 @@
     <div x-data="{allTasks:$persist([])}">
         <h1>Todo Application</h1>
         <form @submit.prevent="
-        allTasks = [{task: $refs.task.value, id:Date.now(), done:false}].concat(allTasks); 
-        $refs.task.value=''">
-            <input type="text" x-ref="task">
+              ($refs.task.value.trim().length && !allTasks.map(x=>x.task).includes($refs.task.value.trim())) ? allTasks = [{task: $refs.task.value.trim(), id:Date.now(), done:false}].concat(allTasks)
+        : $refs.task.value.trim() === '' 
+        ? alert('Input value cannot be empty') : alert('Task added already.'); 
+        $refs.task.value='' ">
+            <input type=" text" x-ref="task" placeholder="Enter something...">
             <button type="submit">Add Task</button>
         </form>
         <div class="items">
             <div x-data="{uncompleted:$persist([])}" x-effect="uncompleted = allTasks.filter(x=>x.done===false)">
-                <h3>Todo</h3>
+                <h3>Uncompleted</h3>
                 <template x-for="element in uncompleted" :key="element.id">
-                    <div x-data="{showControls:false}" @mouseover="showControls = true"
-                        @mouseout="showControls = false">
+                    <div x-data="{showControls:false}" @mouseover="showControls = true" @mouseout="showControls = false"
+                        class="task">
                         <div class="controls">
-                            <span x-show="showControls" x-on:click="element.done=true">[D]</span>
-                            <span x-show="showControls" @click="allTasks=allTasks.filter(x=>x.id!==element.id)">[R]</span>
+                            <div x-show="showControls" @click="element.done=true">[M]</div>
+                            <div x-show="showControls"
+                                @click="allTasks=allTasks.filter(x=>x.id!==element.id)">[R]</div>
                         </div>
-                        <div x-text="element.task" class="task"></div>
+                        <div x-text="element.task" ></div>
                     </div>
                 </template>
             </div>
@@ -52,12 +55,13 @@
                 <h3>Completed</h3>
                 <template x-for="element in completed">
                     <div x-data="{showControls:false}" @mouseover="showControls = true"
-                        @mouseout="showControls = false">
+                        @mouseout="showControls = false" class="task">
                         <div class="controls">
-                            <span x-show="showControls" x-on:click="element.done=false">[U]</span>
-                            <span x-show="showControls" @click="allTasks=allTasks.filter(x=>x.id!==element.id)">[R]</span>
+                            <div x-show="showControls" @click="element.done=false">[U]</div>
+                            <div x-show="showControls"
+                                @click="allTasks=allTasks.filter(x=>x.id!==element.id)">[R]</div>
                         </div>
-                        <div x-text="element.task" class="task"></div>
+                        <div x-text="element.task"></div>
                     </div>
                 </template>
             </div>
