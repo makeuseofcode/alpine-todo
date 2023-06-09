@@ -10,21 +10,6 @@
 </head>
 
 <body>
-    <!-- <div x-data="{name:'David Uzondu', organisation:'Make Use Of'}" x-show="0">
-        My name is <strong x-text="name"></strong>
-        and <i x-text="organisation"></i> is Awesome
-    </div> -->
-    <!-- <div x-data="{number: 1}" x-show="1">
-        <h1 x-text="number"></h1>
-        <button @click="number = number + 1">Add new number</button>
-    </div> -->
-    <!-- <div x-data="{shown:true}">
-        <button @click="shown=!shown" x-text="shown ? 'Hide Element' : 'Show Element'">Toggle</button>
-        <template x-if="shown">
-            <div>The quick brown fox jumped over the dog.</div>
-        </template>
-    </div>  -->
-
     <div x-data="{allTasks:$persist([])}">
         <h1>Todo Application</h1>
         <form @submit.prevent="
